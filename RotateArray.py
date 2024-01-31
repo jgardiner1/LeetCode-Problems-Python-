@@ -1,41 +1,58 @@
-# def rotate(nums: list[int], k: int) -> None:
-#     """
-#     Do not return anything, modify nums in-place instead.
-#     """
-#     for x in range(k):
-#         temp = nums.pop()
-#         print(temp)
-#         nums.insert(0, temp)
+'''
+189. Rotate Array
+Solved
+Medium
+Topics
+Companies
+Hint
+Given an integer array nums, rotate the array to the right by k steps, where k is non-negative.
 
+ 
 
-def rotate(nums: list[int], k: int) -> None:
-    # any numbers target position can be calculated as
-    # original index position + k - len(arr)
-    # eg - [1, 2, 3, 4] k = 2
-    # 4 - index pos 3
-    # 3 + 2 - 4 = 1
+Example 1:
 
-    index = 0
-    value = nums[index]
+Input: nums = [1,2,3,4,5,6,7], k = 3
+Output: [5,6,7,1,2,3,4]
+Explanation:
+rotate 1 steps to the right: [7,1,2,3,4,5,6]
+rotate 2 steps to the right: [6,7,1,2,3,4,5]
+rotate 3 steps to the right: [5,6,7,1,2,3,4]
+Example 2:
 
-    visited = list()
+Input: nums = [-1,-100,3,99], k = 2
+Output: [3,99,-1,-100]
+Explanation: 
+rotate 1 steps to the right: [99,-1,-100,3]
+rotate 2 steps to the right: [3,99,-1,-100]
+ 
 
-    for x in range(len(nums)):
-        targetIndex = index + k - len(nums)
-        if targetIndex < 0:
-            targetIndex += len(nums)
-        print("target index: {}".format(targetIndex))
-        replaced = nums[targetIndex]
-        print("Replacing value: {}".format(replaced))
-        nums[targetIndex] = value
+Constraints:
 
-        print("new array: {}".format(nums))
+1 <= nums.length <= 105
+-231 <= nums[i] <= 231 - 1
+0 <= k <= 105
+ 
 
-        index = targetIndex
-        value = replaced
+Follow up:
 
+Try to come up with as many solutions as you can. There are at least three different ways to solve this problem.
+Could you do it in-place with O(1) extra space?
+'''
 
-nums = [1, 2]
-print("Before: {}".format(nums))
-rotate(nums, 1)
-print("After: {}".format(nums))
+class Solution:
+    def rotate(self, nums: list[int], k: int) -> None:
+        def twopt(arr, i, j):
+            while (i < j):
+                arr[i], arr[j] = arr[j], arr[i]
+                i += 1
+                j -= 1
+            return arr
+        
+        if k > len(nums):
+            k %= len(nums)
+            
+        if (k > 0):
+            twopt(nums, 0, len(nums) - 1)  # rotate entire array
+            twopt(nums, 0, k - 1)          # rotate array upto k elements
+            twopt(nums, k, len(nums) - 1)  # rotate array from k to end of array
+        
